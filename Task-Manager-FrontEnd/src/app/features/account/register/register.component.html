@@ -44,9 +44,9 @@
   </mat-form-field>
 
   <button (click)="register()" mat-flat-button color="primary">Register</button>
-  <button [routerLink]="['/login']"
-      mat-flat-button color="secondary">
+  <a [routerLink]="['/login']">
+    <button tabindex="-1" mat-flat-button color="secondary">
       Already have an account? Login
     </button>
-
+  </a>
 </form>

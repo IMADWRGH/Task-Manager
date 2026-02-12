@@ -1,0 +1,25 @@
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px  auto auto ;
+    width: 400px;
+    padding: 24px 24px 32px ;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+
+    button{
+    width: 100%;
+    margin-top: 16px;
+    }
+      
+    mat-form-field{
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+}
+
+

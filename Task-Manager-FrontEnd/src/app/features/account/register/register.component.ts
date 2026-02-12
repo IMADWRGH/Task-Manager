@@ -1,33 +1,48 @@
 import { Component, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import {
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule } from '@angular/router';
+import { UserService } from '../../../shared/services/user/user.service';
+import { ILoginReponse, IRegister } from '../../../shared/models/user.model';
+import { AuthService } from '../../../shared/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports:   [
-    MatInputModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    RouterLink,
-    
-  ],
+  imports: [MatInputModule, ReactiveFormsModule, MatButtonModule, RouterModule],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-register() {
-throw new Error('Method not implemented.');
-}
-  fb= inject(NonNullableFormBuilder)
-  registerForm=this.fb.group({
-    email:this.fb.control(['',Validators.required, Validators.email]),
-    password:this.fb.control(['',Validators.required, Validators.minLength(8)]),
-    firstName:this.fb.control('',Validators.required),
-    lastName:this.fb.control('',Validators.required),
-  })
+  private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  fb = inject(NonNullableFormBuilder);
+  registerForm = this.fb.group({
+    email: this.fb.control('', [Validators.required, Validators.email]),
+    password: this.fb.control('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    firstName: this.fb.control('', [Validators.required]),
+    lastName: this.fb.control('', [Validators.required]),
+  });
+
+  register() {
+    if (this.registerForm.invalid) {
+      return;
+    }
+
+    this.userService
+      .register(this.registerForm.value as IRegister)
+      .subscribe((token: ILoginReponse) => {
+        this.authService.token = token.accessToken;
+        this.router.navigateByUrl('/boards');
+      });
+  }
 }

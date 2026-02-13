@@ -31,6 +31,10 @@ public class User {
     @Column(nullable = false)
     private Boolean emailVerified = false;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role=Role.USER; // default role -> user
+
     @ManyToMany
     @JoinTable(
             name = "user_board",

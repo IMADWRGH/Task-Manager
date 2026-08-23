@@ -25,5 +25,15 @@ public class Board {
 
     // One Board has many Swimlanes
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
     private List<Swimlane> swimlanes = new ArrayList<>();
+
+    // One Board has many Labels
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Label> labels = new ArrayList<>();
+
+    public void addSwimlane(Swimlane swimlane) {
+        swimlanes.add(swimlane);
+        swimlane.setBoard(this);
+    }
 }

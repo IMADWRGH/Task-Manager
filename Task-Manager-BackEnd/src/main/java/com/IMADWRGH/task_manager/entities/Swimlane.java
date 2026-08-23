@@ -19,13 +19,15 @@ public class Swimlane {
     @Column(length = 100, nullable = false)
     private String name;
 
+    // Position of the swimlane within its board (DB column named "order")
     @Column(name = "`order`")
-    private Integer order;
+    private Integer position;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
     @OneToMany(mappedBy = "swimlane", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("position ASC")
     private List<Card> cards = new ArrayList<>();
 }
